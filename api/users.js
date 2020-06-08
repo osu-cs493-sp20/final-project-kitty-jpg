@@ -1,9 +1,11 @@
+//Sean Spink
 const router = require('express').Router();
 const validation = require('../lib/validation');
 
 const {
   getUserDetailsbyID,    
   insertNewUser,
+  deleteUser,
   updateUser
 } = require('../models/user');
 
@@ -96,11 +98,8 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
    try{
-       if(validation.validateAgainstSchema(req.body, userSchema)){
-           
-       } else {
-           
-       }
+     var result = await deleteUser(req.params.id);
+     res.status(201).send({status: "deleted", result: result});
    } catch (err){
        console.error(err);
        res.status(500).send({

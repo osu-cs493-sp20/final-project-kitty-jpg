@@ -1,3 +1,4 @@
+//Sean Spink
 require('dotenv').config()
 const express = require('express');
 const { optionalAuthentication } = require('./lib/auth')
