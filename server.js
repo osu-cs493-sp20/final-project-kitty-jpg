@@ -1,3 +1,4 @@
+//Sean Spink
 require('dotenv').config()
 const express = require('express');
 const { connectToDB } = require("./lib/mongo");
@@ -30,7 +31,7 @@ connectToDB(async () => {
     .pipe(res); 
   });
 
-  app.use("*", (err, _, res, next) => {
+  app.use("*", (err, req, res, next) => {
     console.error(err);
     res.status(500).send({
       err: "An error occurred. Try again later.",
