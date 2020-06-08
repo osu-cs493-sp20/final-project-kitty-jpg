@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const { optionalAuthentication } = require('./lib/auth')
-
+const { connectToDB } = require('./lib/mongo');
 const api = require('./api');
 
 const app = express();
@@ -19,6 +19,9 @@ app.use('*', function (req, res, next) {
   });
 });
 
-app.listen(port, function() {
-  console.log("== Server is running on port", port);
+
+connectToDB(() => {
+  app.listen(port, () => {
+    console.log("== Server is running on port", port);
+  });
 });
