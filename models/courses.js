@@ -9,7 +9,6 @@ const courseSchema = {
   term: { required: true },
   instructorId: { required: true }
 };
-
 exports.courseSchema = courseSchema;
 
 async function insertNewCourse(course) {
@@ -88,3 +87,16 @@ async function getCoursesPage(page) {
 }
 exports.getCoursesPage = getCoursesPage;
 
+async function getCourseStudentsByID(id) {
+  const db = getDBReference();
+  const collection = db.collection('courses');
+  if (!ObjectId.isValid(id)) {
+    return null;
+  } else {
+    const results = await collection
+      .find({ _id: id })
+      .toArray();
+    return results[0];
+  }
+}
+exports.getCourseStudentsByID = getCourseStudentsByID;

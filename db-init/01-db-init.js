@@ -1,3 +1,14 @@
+db.createUser({
+	user: "tarpaulin",
+	pwd: "hunter2",
+	roles: [
+		{
+			role: "readWrite",
+			db: "tarpaulin"
+		}
+	]
+});
+
 db.assignments.insertMany([
   {
     "_id": ObjectId("5ede7d67fc5a3b4bbb8e80f9"),
@@ -10,13 +21,27 @@ db.assignments.insertMany([
 
 db.courses.insertMany([
   {
-    "_id": ObjectId("4ede7188df0d9f5831a0c051"),
-    "subject": "English",
-    "number": "101",
-    "title": "Intro to English",
-    "term": "Fall 2020",
-    "instructorId": ObjectId("3ede7188df0d9f5831a0c051")
-  },
+		"_id": ObjectId("5edecf8a4d87dd0012bfb009"),
+		"subject": "math",
+		"number": "341",
+		"title": "Linear Algebra",
+		"term": "Spring",
+		"instructorid": "5edecf8a4d87dd0012bfb489",
+		"students": [
+      ObjectId("5edecf8a4d87dd0012bfb485")
+    ]
+	},
+	{
+		"_id": ObjectId("5edecf8a4d87dd0012bfb539"),
+		"subject": "computer science",
+		"number": "290",
+		"title": "Web Dev",
+		"term": "Spring",
+		"instructorid": "5edecf8a4d87dd0012bfb489",
+		"students": [
+      
+    ]
+	},
 ])
 
 db.users.insertMany([

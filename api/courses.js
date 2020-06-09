@@ -2,7 +2,6 @@
 const router = require('express').Router();
 const { validateAgainstSchema } = require('../lib/validation');
 const { generateAuthToken } = require('../lib/auth');
-const { CourseById, getCoursesPage, updateCourseById, insertNewCourse, getCourseById } = require('../models/course');
 const { ObjectId } = require('mongodb');
 const { getAssignmentsByCourseId } = require('../models/assignment');
 
@@ -10,13 +9,17 @@ const {
   requireAuthentication
 } = require('../lib/auth')
 
-const courseSchema = {
-  subject: { required: true },
-  number: { required: true },
-  title: { required: true },
-  term: { required: true },
-  instructorId: { required: true }
-}
+
+const {
+  courseSchema,
+  getCourseDetailsbyID,
+  getCourseStudentsByID,
+  CourseById,
+  getCoursesPage,
+  updateCourseById,
+  insertNewCourse,
+  getCourseById
+} = require('../models/courses')
 
 router.get('/', async (req, res) => {
   try {
@@ -129,6 +132,26 @@ router.get("/:courseId/assignments", async (req, res, next) => {
       res.status(500).send({
         error: "An error occurred.  Try again later."
       });
+  }
+});
+
+// gets the students in the courses by id
+router.get('/:id/students', async(req, res, next) => {
+  console.log("endpoint hit");
+  try {
+    const course = await getCourseById(req.params.id);
+    if (course) {
+      console.log("course found")
+      console.log(course)
+      res.status(200).send(course.students);
+    } else {
+      next();
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      error: "Unable to students from course. Please try again later. "
+    });
   }
 });
 
