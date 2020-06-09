@@ -1,7 +1,7 @@
 //Sean Spink
 const router = require('express').Router();
 const validation = require('../lib/validation');
-
+const { generateAuthToken } = require('../lib/auth')
 const {
   getUserDetailsbyID,    
   insertNewUser,
@@ -59,8 +59,8 @@ router.post('/login', async (req, res) => {
       );
       if (authenticated) {
         const token = generateAuthToken(
-          authenticated.id,
-          authenticated.admin);
+          authenticated._id,
+          authenticated.role);
 
         res.status(200).send({
           token: token
@@ -88,12 +88,18 @@ router.post('/', async (req, res, next) => {
        if(validation.validateAgainstSchema(req.body, userSchema)){
         //Insert into mongoDB
         const id = await insertNewUser(req.body);
-        res.status(201).send({
-            id: id,
-            links: {
-                user: `/users/${id}`
-            }
-         });
+        if (id) {
+          res.status(201).send({
+              id: id,
+              links: {
+                  user: `/users/${id}`
+              }
+          });
+        } else {
+          res.status(400).send({
+              error: "duplicate email or incorrect permission"
+          });
+        }
        } else {
          res.status(400).send({
              error: "invalid body"
