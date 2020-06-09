@@ -76,6 +76,8 @@ async function getAssignmentsByCourseId(courseId) {
     const collection = db.collection('assignments');
     const results = await collection
     .find({courseId: new ObjectId(courseId)})
+    .project( {_id:1} )
+    .map(x => x._id)
     .toArray();
     return results;
 }
