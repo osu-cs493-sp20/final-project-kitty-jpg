@@ -1,13 +1,3 @@
-db.createUser({
-	user: "tarpaulin",
-	pwd: "hunter2",
-	roles: [
-		{
-			role: "readWrite",
-			db: "tarpaulin"
-		}
-	]
-});
 
 db.assignments.insertMany([
   {
@@ -39,7 +29,7 @@ db.courses.insertMany([
 		"term": "Spring",
 		"instructorid": "5edecf8a4d87dd0012bfb489",
 		"students": [
-      
+
     ]
 	},
 ])

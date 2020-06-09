@@ -37,6 +37,10 @@ router.get('/', async (req, res) => {
       coursePage.links.prevPage = `/courses?page=${coursePage.page - 1}`;
       coursePage.links.firstPage = '/courses?page=1';
     }
+    for (let val of coursePage.courses){
+      delete(val.students)
+    }
+    // TODO: Remove list of assignments 
     res.status(200).send(coursePage);
   } catch (err) {
     console.error(err);
@@ -73,6 +77,7 @@ router.get("/:courseId",  async (req, res, next) => {
   try {
     const course = await getCourseById(req.params.courseId);
     if (course) {
+      delete(course.students)
       res.status(200).send(course);
     } else {
       next();
@@ -137,12 +142,9 @@ router.get("/:courseId/assignments", async (req, res, next) => {
 
 // gets the students in the courses by id
 router.get('/:id/students', async(req, res, next) => {
-  console.log("endpoint hit");
   try {
     const course = await getCourseById(req.params.id);
     if (course) {
-      console.log("course found")
-      console.log(course)
       res.status(200).send(course.students);
     } else {
       next();
