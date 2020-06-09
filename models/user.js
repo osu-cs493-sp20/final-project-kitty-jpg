@@ -10,6 +10,7 @@ const userSchema = {
     password: { required: true },
     role: { required: true },
 }
+exports.userSchema = userSchema;
 
 async function insertNewUser(user) {
   const tempUser = await getUserByEmail(user.email);
@@ -83,7 +84,7 @@ async function getUserById(id) {
     return null;
   } else {
     const results = await collection
-      .find({ _id: new ObjectId(id) })
+      .find({ _id: id })
       .toArray();
     return results[0];
   }
