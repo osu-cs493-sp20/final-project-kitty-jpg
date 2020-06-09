@@ -1,6 +1,6 @@
 //Sean Spink
 const { ObjectId } = require('mongodb');
-
+const bcrypt = require('bcryptjs')
 const { getDBReference } = require('../lib/mongo');
 const { extractValidFields } = require('../lib/validation');
 
@@ -89,7 +89,7 @@ async function getUserById(id) {
   }
 }
 
-async function getUserByEmail(email) {
+exports.getUserByEmail = async function (email) {
   const db = getDBReference();
   const collection = db.collection('users');
   const results = await collection
@@ -98,3 +98,13 @@ async function getUserByEmail(email) {
   console.log("Results: ", results[0]);
   return results[0];
 }
+
+exports.validateUser = async function (email, password) {
+  const user = await exports.getUserByEmail(email);
+  if (user && await bcrypt.compare(password, user.password)) {
+      return user;
+  }
+  else {
+      return null
+  }
+};

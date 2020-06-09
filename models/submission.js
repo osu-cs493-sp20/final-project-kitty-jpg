@@ -53,7 +53,6 @@ async function updateSubmissionById(id, updateObj) {
     return null;
   } else {
     const results =
-        //db.listCollections().toArray();
         await db.collection('submissions.files').updateOne(
             {'_id': new ObjectId(id)},
             {'$set': {

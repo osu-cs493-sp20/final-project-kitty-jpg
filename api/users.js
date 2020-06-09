@@ -6,7 +6,8 @@ const {
   getUserDetailsbyID,    
   insertNewUser,
   deleteUser,
-  updateUser
+  updateUser,
+  validateUser
 } = require('../models/user');
 
 const userSchema = {
@@ -42,6 +43,42 @@ router.get('/:id', async (req, res, next) => {
     console.error(err);
     res.status(500).send({
       error: "Unable to fetch business.  Please try again later."
+    });
+  }
+});
+
+/*
+ * Route for user to get JWT 
+ */
+router.post('/login', async (req, res) => {
+  if (req.body && req.body.email && req.body.password) {
+    try {
+      const authenticated = await validateUser(
+        req.body.email,
+        req.body.password
+      );
+      if (authenticated) {
+        const token = generateAuthToken(
+          authenticated.id,
+          authenticated.admin);
+
+        res.status(200).send({
+          token: token
+        });
+      } else {
+        res.status(401).send({
+          error: "Invalid authentication credentials."
+        })
+      }
+    } catch (err) {
+      console.error("  -- error:", err);
+      res.status(500).send({
+        error: "Error logging in.  Try again later."
+      });
+    }
+  } else {
+    res.status(400).send({
+      error: "Request body needs a user ID and password."
     });
   }
 });

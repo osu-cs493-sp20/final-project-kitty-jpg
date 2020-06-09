@@ -7,11 +7,17 @@ const {
   updateAssignmentById,
   getAssignmentById
 } = require("../models/assignment");
+const {
+  requireAuthentication
+} = require('../lib/auth')
 const validation = require("../lib/validation");
 
 // Post a new assignment. Body must contains all
 // fields of assignment schema
-router.post("/", async (req, res, next) => {
+router.post("/", requireAuthentication, async (req, res, next) => {
+  if (req.body.role > 1){
+    res.status(401).send({error: "This action requires a higher privelege"}) 
+  }
   try {
     if (validation.validateAgainstSchema(req.body, assignmentSchema)) {
       const id = await insertNewAssignment(req.body);
