@@ -1,4 +1,5 @@
 //Sean Spink
+//Halston Sellentin
 require('dotenv').config()
 const express = require('express');
 const { connectToDB } = require("./lib/mongo");

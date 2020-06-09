@@ -3,6 +3,7 @@
  */
 const { ObjectId, GridFSBucket } = require('mongodb');
 const { getDBReference } = require('../lib/mongo');
+const { extractValidFields } = require('../lib/validation')
 
 /*
  * Schema describing required/optional fields of a submission object.
@@ -27,6 +28,43 @@ async function getSubmissionInfoById(id) {
   }
 }
 exports.getSubmissionInfoById = getSubmissionInfoById;
+
+async function deleteSubmissionById(id) {
+  const db = getDBReference();
+  const bucket =
+    new GridFSBucket(db, { bucketName: 'submissions' });
+
+  if (!ObjectId.isValid(id)) {
+    return null;
+  } else {
+    const results =
+      await bucket.delete(new ObjectId(id));
+    return results;
+  }
+}
+exports.deleteSubmissionById = deleteSubmissionById;
+
+async function updateSubmissionById(id, updateObj) {
+    updateObj = extractValidFields(updateObj, SubmissionSchema)
+    console.log(updateObj)
+  const db = getDBReference();
+
+  if (!ObjectId.isValid(id)) {
+    return null;
+  } else {
+    const results =
+        //db.listCollections().toArray();
+        await db.collection('submissions.files').updateOne(
+            {'_id': new ObjectId(id)},
+            {'$set': {
+                "metadata.studentId": updateObj.studentId,
+                "metadata.assignmentId": updateObj.assignmentId
+                }
+            })
+    return results.modifiedCount;
+  }
+}
+exports.updateSubmissionById = updateSubmissionById;
 
 function getDownloadStreamByFilename(filename) {
   const db = getDBReference();
