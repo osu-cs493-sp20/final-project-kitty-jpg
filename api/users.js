@@ -3,18 +3,12 @@ const router = require('express').Router();
 const validation = require('../lib/validation');
 
 const {
-  getUserDetailsbyID,    
+  getUserDetailsbyID,
   insertNewUser,
   deleteUser,
-  updateUser
+  updateUser,
+  userSchema
 } = require('../models/user');
-
-const userSchema = {
-    name: { required: true },
-    email: { required: true },
-    password: { required: true },
-    role: { required: true }
-}
 
 router.get('/', async (req, res, next) => {
    try{
@@ -62,7 +56,7 @@ router.post('/', async (req, res, next) => {
              error: "invalid body"
          });
        }
-       
+
    } catch (err) {
        console.error(err);
        res.status(500).send({
@@ -87,7 +81,7 @@ router.put('/:id', async (req, res, next) => {
              error: "invalid body"
          });
        }
-       
+
    } catch (err) {
        console.error(err);
        res.status(500).send({
