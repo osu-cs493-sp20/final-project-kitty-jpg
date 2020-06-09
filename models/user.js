@@ -1,6 +1,6 @@
 //Sean Spink
 const { ObjectId } = require('mongodb');
-
+const bcrypt = require('bcryptjs')
 const { getDBReference } = require('../lib/mongo');
 const { extractValidFields } = require('../lib/validation');
 
@@ -12,10 +12,14 @@ const userSchema = {
 }
 
 async function insertNewUser(user) {
-  const tempUser = await getUserByEmail(user.email);
+  const tempUser = await exports.getUserByEmail(user.email);
   if(tempUser == null){
     user = extractValidFields(user, userSchema);
-    if(user.role == "student" || user.role == "instructor" || user.role == "admin"){
+    if(user.role === "2" || user.role === "1" || user.role === "0"){
+      user.password = await bcrypt.hash(
+        user.password,
+        8
+      );
       const db = getDBReference();
       const collection = db.collection('users');
       const result = await collection.insertOne(user);
@@ -38,7 +42,7 @@ async function deleteUser(id) {
     const db = getDBReference();
     const collection = db.collection('users');
     const result = await collection.deleteOne({_id:tempUser._id});
-    return result;
+    return result.deletedCount;
   } else {
     console.log("Couldn't find user", id);
     return null;
@@ -58,7 +62,7 @@ async function updateUser(user, id) {
     if(oldUser._id == id){
       const result = await collection.updateOne({_id:oldUser._id}, {$set: user});
       console.log("RESULTS: ", result);
-      return result;
+      return result.modifiedCount;
     } else {
       return null;
     }
@@ -89,12 +93,22 @@ async function getUserById(id) {
   }
 }
 
-async function getUserByEmail(email) {
+exports.getUserByEmail = async function (email) {
   const db = getDBReference();
   const collection = db.collection('users');
   const results = await collection
     .find({ email: email })
     .toArray();
-  console.log("Results: ", results[0]);
+  //console.log("Results: ", results[0]);
   return results[0];
 }
+
+exports.validateUser = async function (email, password) {
+  const user = await exports.getUserByEmail(email);
+  if (user && await bcrypt.compare(password, user.password)) {
+      return user;
+  }
+  else {
+      return null
+  }
+};

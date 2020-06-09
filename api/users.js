@@ -1,12 +1,13 @@
 //Sean Spink
 const router = require('express').Router();
 const validation = require('../lib/validation');
-
+const { generateAuthToken } = require('../lib/auth')
 const {
   getUserDetailsbyID,    
   insertNewUser,
   deleteUser,
-  updateUser
+  updateUser,
+  validateUser
 } = require('../models/user');
 
 const userSchema = {
@@ -41,7 +42,43 @@ router.get('/:id', async (req, res, next) => {
   } catch (err) {
     console.error(err);
     res.status(500).send({
-      error: "Unable to fetch business.  Please try again later."
+      error: "Unable to fetch user.  Please try again later."
+    });
+  }
+});
+
+/*
+ * Route for user to get JWT 
+ */
+router.post('/login', async (req, res) => {
+  if (req.body && req.body.email && req.body.password) {
+    try {
+      const authenticated = await validateUser(
+        req.body.email,
+        req.body.password
+      );
+      if (authenticated) {
+        const token = generateAuthToken(
+          authenticated._id,
+          authenticated.role);
+
+        res.status(200).send({
+          token: token
+        });
+      } else {
+        res.status(401).send({
+          error: "Invalid authentication credentials."
+        })
+      }
+    } catch (err) {
+      console.error("  -- error:", err);
+      res.status(500).send({
+        error: "Error logging in.  Try again later."
+      });
+    }
+  } else {
+    res.status(400).send({
+      error: "Request body needs a user ID and password."
     });
   }
 });
@@ -51,12 +88,18 @@ router.post('/', async (req, res, next) => {
        if(validation.validateAgainstSchema(req.body, userSchema)){
         //Insert into mongoDB
         const id = await insertNewUser(req.body);
-        res.status(201).send({
-            id: id,
-            links: {
-                user: `/users/${id}`
-            }
-         });
+        if (id) {
+          res.status(201).send({
+              id: id,
+              links: {
+                  user: `/users/${id}`
+              }
+          });
+        } else {
+          res.status(400).send({
+              error: "duplicate email or incorrect permission"
+          });
+        }
        } else {
          res.status(400).send({
              error: "invalid body"
@@ -75,11 +118,12 @@ router.put('/:id', async (req, res, next) => {
    try{
        if(validation.validateAgainstSchema(req.body, userSchema)){
         //Insert into mongoDB
-        const id = await updateUser(req.body, req.params.id);
+        const result = await updateUser(req.body, req.params.id);
         res.status(201).send({
-            id: id,
+            res: result,
+            id: req.params.id,
             links: {
-                user: `/users/${id}`
+                user: `/users/${req.params.id}`
             }
          });
        } else {
