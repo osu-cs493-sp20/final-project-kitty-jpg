@@ -42,7 +42,7 @@ router.get('/:id', async (req, res, next) => {
   } catch (err) {
     console.error(err);
     res.status(500).send({
-      error: "Unable to fetch business.  Please try again later."
+      error: "Unable to fetch user.  Please try again later."
     });
   }
 });
@@ -118,11 +118,12 @@ router.put('/:id', async (req, res, next) => {
    try{
        if(validation.validateAgainstSchema(req.body, userSchema)){
         //Insert into mongoDB
-        const id = await updateUser(req.body, req.params.id);
+        const result = await updateUser(req.body, req.params.id);
         res.status(201).send({
-            id: id,
+            res: result,
+            id: req.params.id,
             links: {
-                user: `/users/${id}`
+                user: `/users/${req.params.id}`
             }
          });
        } else {

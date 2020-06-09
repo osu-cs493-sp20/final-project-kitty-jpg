@@ -42,7 +42,7 @@ async function deleteUser(id) {
     const db = getDBReference();
     const collection = db.collection('users');
     const result = await collection.deleteOne({_id:tempUser._id});
-    return result;
+    return result.deletedCount;
   } else {
     console.log("Couldn't find user", id);
     return null;
@@ -62,7 +62,7 @@ async function updateUser(user, id) {
     if(oldUser._id == id){
       const result = await collection.updateOne({_id:oldUser._id}, {$set: user});
       console.log("RESULTS: ", result);
-      return result;
+      return result.modifiedCount;
     } else {
       return null;
     }
