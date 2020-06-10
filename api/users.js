@@ -11,14 +11,22 @@ const {
   insertNewUser,
   deleteUser,
   updateUser,
-  validateUser
+  validateUser,
+  insertUserToCourse,
+  removeUserFromCourse
 } = require('../models/user');
 
 const userSchema = {
     name: { required: true },
     email: { required: true },
     password: { required: true },
-    role: { required: true }
+    role: { required: true },
+    courses: {required: false}
+}
+
+const courseInsertSchema = {
+    add: {required: false},
+    remove: {required: false}
 }
 
 router.get('/', requireAuthentication, async (req, res, next) => {
@@ -36,6 +44,50 @@ router.get('/', requireAuthentication, async (req, res, next) => {
 });
 
 router.get('/:id', requireAuthentication, async (req, res, next) => {
+  try {
+    if(requireAuthorizationURL(req, res, next, 'id') == 1){
+      const user = await getUserDetailsbyID(req.params.id);
+      if (user) {
+        res.status(200).send(user);
+      } else {
+        next();
+      }
+    } else {
+      res.status(401).send({
+        error: "User is not authorized to perform this action"
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      error: "Unable to fetch user.  Please try again later."
+    });
+  }
+});
+
+//router.get('/:id/course', requireAuthentication, async (req, res, next) => {
+//  try {
+//    if(requireAuthorizationURL(req, res, next, 'id') == 1){
+//      const user = await getUserDetailsbyID(req.params.id);
+//      if (user) {
+//        res.status(200).send(user);
+//      } else {
+//        next();
+//      }
+//    } else {
+//      res.status(401).send({
+//        error: "User is not authorized to perform this action"
+//      });
+//    }
+//  } catch (err) {
+//    console.error(err);
+//    res.status(500).send({
+//      error: "Unable to fetch user.  Please try again later."
+//    });
+//  }
+//});
+
+router.put('/:id/course', requireAuthentication, async (req, res, next) => {
   try {
     if(requireAuthorizationURL(req, res, next, 'id') == 1){
       const user = await getUserDetailsbyID(req.params.id);
@@ -157,6 +209,71 @@ router.put('/:id', requireAuthentication,async (req, res, next) => {
        });
    }
 });
+
+router.put('/:id/course', requireAuthentication,async (req, res, next) => {
+   try{
+      if(requireAuthorizationURL(req, res, next, 'id') == 1){  
+         if(validation.validateAgainstSchema(req.body, courseInsertSchema)){
+          //Insert into mongoDB
+          const result = await insertUserToCourse(req);
+          res.status(201).send({
+              res: result,
+              id: req.params.id,
+              links: {
+                  user: `/users/${req.params.id}`
+              }
+           });
+         } else {
+           res.status(400).send({
+               error: "invalid body"
+           });
+         }
+      } else {
+        res.status(401).send({
+          error: "User is not authorized to perform this action"
+        });
+      }
+       
+   } catch (err) {
+       console.error(err);
+       res.status(500).send({
+           error: "internal error with creating user"
+       });
+   }
+});
+
+router.delete('/:id/course', requireAuthentication,async (req, res, next) => {
+   try{
+      if(requireAuthorizationURL(req, res, next, 'id') == 1){  
+         if(validation.validateAgainstSchema(req.body, courseInsertSchema)){
+          //Insert into mongoDB
+          const result = await removeUserFromCourse(req);
+          res.status(201).send({
+              res: result,
+              id: req.params.id,
+              links: {
+                  user: `/users/${req.params.id}`
+              }
+           });
+         } else {
+           res.status(400).send({
+               error: "invalid body"
+           });
+         }
+      } else {
+        res.status(401).send({
+          error: "User is not authorized to perform this action"
+        });
+      }
+       
+   } catch (err) {
+       console.error(err);
+       res.status(500).send({
+           error: "internal error with creating user"
+       });
+   }
+});
+
 
 router.delete('/:id', requireAuthentication, async (req, res, next) => {
    try{

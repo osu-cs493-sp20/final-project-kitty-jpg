@@ -98,8 +98,6 @@ exports.removeUserFromCourse = async function(u_id, c_id){
 exports.removeCourseFromRoster = async function(c_id){
   //get course by id to verify its existence
   var course = getCourseById(c_id);
-  //get user by id to verify its existence
-  var user = getUserDetailsbyID(u_id); 
   //remove entry in collection 'course_roster'
   if(user && course){
     const db = getDBReference();
@@ -118,8 +116,6 @@ exports.removeCourseFromRoster = async function(c_id){
 }
 
 exports.removeUserFromRoster = async function(u_id){
-  //get course by id to verify its existence
-  var course = getCourseById(c_id);
   //get user by id to verify its existence
   var user = getUserDetailsbyID(u_id); 
   //remove entry in collection 'course_roster'
