@@ -86,3 +86,17 @@ async function getCoursesPage(page) {
   };
 }
 exports.getCoursesPage = getCoursesPage;
+
+async function deleteCourseById(id){
+  const course = await getCourseById(id);
+  if (course) {
+    const db = getDBReference();
+    const collection = db.collection('courses');
+    const result = await collection.deleteOne({_id: course._id});
+    return result;
+  } else {
+    console.log("Course not found")
+    return null
+  }
+}
+exports.deleteCourseById = deleteCourseById;
