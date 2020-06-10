@@ -21,7 +21,8 @@ const {
   updateCourseById,
   insertNewCourse,
   getCourseById,
-  deleteCourseById
+  deleteCourseById,
+  updateStudents
 } = require('../models/courses')
 
 router.get('/', async (req, res) => {
@@ -81,7 +82,6 @@ router.get("/:courseId",  async (req, res, next) => {
     const course = await getCourseById(req.params.courseId);
     if (course) {
       delete(course.students)
-      // TODO: delete(course.assignments)
       res.status(200).send(course);
     } else {
       next();
@@ -201,7 +201,50 @@ router.get('/:id/students', requireAuthentication, async(req, res, next) => {
 
 router.post('/:id/students', requireAuthentication, async(req, res, next) => {
   if ((req.user.role == 0) || (req.user.id == req.body.instructorId)){
-
+    try {
+      const course = await getCourseById(req.params.id);
+      if (course) {
+        if (req.body.add) {
+          for (let x of req.body.add) {
+            if (ObjectId.isValid(x)){
+              y = ObjectId(x)
+            }
+            const user = await getUserDetailsbyID(x);
+            if (user) {
+              var i = course.students.findIndex(j => j==x)
+              if (i == -1){
+                course.students.push(y);
+              }
+            }
+          }
+        }
+        if (req.body.remove) {
+          for (let x of req.body.remove) {
+            var i = course.students.findIndex(j => j==x)
+            if (i > -1) {
+              course.students.splice(i, 1)
+            }
+          }
+        }
+        if (!req.body.remove && !req.body.add){
+          res.status(400).send({
+            error: "No remove or add field found"
+          });
+        } else {
+          const result = updateCourseById(req.params.id, course)
+          res.status(200).send({
+            success: "done updating/removing students"
+          })
+        }
+      } else {
+        next();
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        error: "Unable to get course. Please try again later. "
+      });
+    }
   } else {
     res.status(403).send({error: "This action requires a higher privelege"})
   }
