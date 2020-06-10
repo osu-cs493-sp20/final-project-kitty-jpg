@@ -3,7 +3,8 @@ const { ObjectId } = require('mongodb');
 const bcrypt = require('bcryptjs')
 const { getDBReference } = require('../lib/mongo');
 const { extractValidFields } = require('../lib/validation');
-const { getCourseById } = require('./courses');
+const { getCourseById,
+      updateCourseById} = require('./courses');
 
 const userSchema = {
     name: { required: true },
@@ -46,6 +47,18 @@ async function deleteUser(id) {
   const tempUser = await getUserById(id);
   if(tempUser != null){
     userData = extractValidFields(tempUser, userSchema);
+    tempUser.courses.forEach(async function(item, index, array){
+      var course = await getCourseById(item);
+      if(course){
+        course.students.forEach(function(item2, index2, array2){
+          if(item == id){
+            course.students.splice(index2, 1);
+          }
+        });  
+        await updateCourseById(item, course);
+      }
+    });
+    
     const db = getDBReference();
     const collection = db.collection('users');
     const result = await collection.deleteOne({_id:tempUser._id});
@@ -137,6 +150,16 @@ exports.insertUserToCourse = async function(req){
     req.body.add.forEach(async function(item, index, array){
       var cond = await needsInsertion(item, user.courses);
       if(cond){
+        var course = await getCourseById(item);
+        if(course.students){
+          if(needsStudentsInsertion(req.params.id, course.students)){
+            course.students.push(req.params.id);
+          }
+        } else {
+          course.students = [req.params.id];
+        }
+        
+        await updateCourseById(item, course);
         user.courses.push(item);
       }
     });    
@@ -196,6 +219,21 @@ async function needsInsertion(course, courseList){
     console.log('course: ', course, ' is invalid ');
     return false;
   }
+  
+  courseList.forEach(function(item, index, array){
+    console.log("Checking: ", course, "Against: ", item);
+    if(course == item){
+      console.log('returning true');
+      test = false;
+    }
+  });
+  
+  console.log('test: ', test);
+  return test;
+}
+
+function needsStudentsInsertion(course, courseList){
+  var test = true;
   
   courseList.forEach(function(item, index, array){
     console.log("Checking: ", course, "Against: ", item);
