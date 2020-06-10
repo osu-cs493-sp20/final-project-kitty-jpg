@@ -1,6 +1,7 @@
 //Sean Spink
 //Halston Sellentin
-require('dotenv').config()
+require('dotenv').config();
+const { applyRateLimit } = require('./ratelimiter');
 const express = require('express');
 const { connectToDB } = require("./lib/mongo");
 const { optionalAuthentication } = require('./lib/auth')
@@ -8,6 +9,9 @@ const { getDownloadStreamByFilename } = require('./models/submission')
 const app = express();
 const port = process.env.PORT || 8000;
 
+
+
+app.use(applyRateLimit);
 app.use(optionalAuthentication);
 app.use(express.json());
 
