@@ -112,3 +112,9 @@ exports.validateUser = async function (email, password) {
       return null
   }
 };
+
+exports.insertUserToCourse = async function(u_id, c_id){
+  //get course by id to verify its existence
+  //get user by id to verify its existence
+  //create entry in collection 'course_roster'
+}

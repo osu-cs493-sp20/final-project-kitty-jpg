@@ -8,14 +8,14 @@ const redisClient = redis.createClient(redisPort, redisHost);
 const rateLimitWindowMS = 60000;
 const rateLimitNumRequests = 5;
 
-function getUserTokenBucket(ip){
+function getUserTokenBucket(ip) {
   return new Promise((resolve, reject) => {
     redisClient.hgetall(ip, (err, tokenBucket) => {
-      if(err){
+      if (err) {
         reject(err);
       } else {
-        if(tokenBucket){
-          tokenBucket.tokens=parseFloat(tokenBucket.tokens);
+        if (tokenBucket) {
+          tokenBucket.tokens = parseFloat(tokenBucket.tokens);
         } else {
           tokenBucket = {
             tokens: rateLimitNumRequests,
@@ -28,10 +28,10 @@ function getUserTokenBucket(ip){
   });
 }
 
-function saveUserTokeBucket(ip, tokenBucket){
+function saveUserTokenBucket(ip, tokenBucket) {
   return new Promise((resolve, reject) => {
     redisClient.hmset(ip, tokenBucket, (err, resp) => {
-      if(err){
+      if (err) {
         reject(err);
       } else {
         resolve();
@@ -40,21 +40,21 @@ function saveUserTokeBucket(ip, tokenBucket){
   });
 }
 
-async function applyRateLimit(req, res, next){
+async function applyRateLimit(req, res, next) {
   try {
     const tokenBucket = await getUserTokenBucket(req.ip);
     const timestamp = Date.now();
-    const ellapsedTime = timestamp - tokenBucket.last;
-    const newTokens = ellapsedTime * (rateLimitNumRequests / rateLimitWindowMS);
+    const ellapsedMilliseconds = timestamp - tokenBucket.last;
+    const newTokens = ellapsedMilliseconds * (rateLimitNumRequests / rateLimitWindowMS);
     tokenBucket.tokens += newTokens;
     tokenBucket.tokens = Math.min(tokenBucket.tokens, rateLimitNumRequests);
     tokenBucket.last = timestamp;
-    
-    if(!tokenBucket.tokens >= 1){
+    if (tokenBucket.tokens >= 1) {
       tokenBucket.tokens -= 1;
-      await saveUserTokeBucket(req.ip, tokenBucket);
+      await saveUserTokenBucket(req.ip, tokenBucket);
       next();
     } else {
+      await saveUserTokenBucket(req.ip, tokenBucket);
       res.status(429).send({
         error: "Too many requests per minute"
       });
@@ -63,7 +63,6 @@ async function applyRateLimit(req, res, next){
     console.error(err);
     next();
   }
-  next();
 }
 
 exports.applyRateLimit = applyRateLimit;

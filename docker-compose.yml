@@ -1,30 +1,23 @@
 version: '3.7'
 services:
-
-  redis:
-    image: redis:latest
-    restart: always
-    networks:
-      - redis-net
-    
   api:
     build: .
     image: tarpaulin-api
     restart: always
     ports:
       - 8000:8000
-    networks:
-      - redis-net
     environment:
-      REDIS_URL: redis://cache
-      MONGO_DATABASE: users
-      MONGO_USER: user
-      MONGO_PASSWORD: user
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_HOST: mongodb
       MONGO_PORT: 27017
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBIT_MQ_HOST: rabbitmq-server
+    networks:
+      - primary
+      - redis-net
 
   rabbitmq-server:
     image: rabbitmq:3-management
@@ -40,16 +33,24 @@ services:
       - ./db-init/:/docker-entrypoint-initdb.d
     ports:
       - 27017:27017
+    networks:
+      - primary
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-      MONGO_INITDB_DATABASE: users
-      MONGO_USER: user
-      MONGO_PASSWORD: user
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_ROOT_PASSWORD}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+
+  redis:
+    image: redis:latest
+    restart: always
+    networks:
+      - redis-net
 
 volumes:
   mongo-data:
-  
+
 networks:
   redis-net:
-    driver: bridge
+  primary:
