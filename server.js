@@ -1,6 +1,7 @@
 //Sean Spink
 //Halston Sellentin
-require('dotenv').config()
+require('dotenv').config();
+const { applyRateLimit } = require('./ratelimiter');
 const express = require('express');
 const { connectToDB } = require("./lib/mongo");
 const { optionalAuthentication } = require('./lib/auth')
@@ -8,6 +9,9 @@ const { getDownloadStreamByFilename } = require('./models/submission')
 const app = express();
 const port = process.env.PORT || 8000;
 
+
+
+app.use(applyRateLimit);
 app.use(optionalAuthentication);
 app.use(express.json());
 
@@ -39,11 +43,11 @@ connectToDB(async () => {
     });
   });
 
-  app.use('*', function (req, res, next) {
-    res.status(404).json({
-      error: "Requested resource " + req.originalUrl + " does not exist"
-    });
-  });
+//  app.use('*', function (req, res, next) {
+//    res.status(404).json({
+//      error: "Requested resource " + req.originalUrl + " does not exist"
+//    });
+//  });
 
   app.listen(port, function() {
     console.log("== Server is running on port", port);

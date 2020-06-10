@@ -9,6 +9,12 @@ const userSchema = {
     email: { required: true },
     password: { required: true },
     role: { required: true },
+    courses: {required: false}
+}
+
+const courseInsertSchema = {
+    add: {required: false},
+    remove: {required: false}
 }
 
 async function insertNewUser(user) {
@@ -58,10 +64,10 @@ async function updateUser(user, id) {
   if(oldUser != null){
     const db = getDBReference();
     const collection = db.collection('users');
-    console.log("New User DAta = ", user);
+    //console.log("New User DAta = ", user);
     if(oldUser._id == id){
       const result = await collection.updateOne({_id:oldUser._id}, {$set: user});
-      console.log("RESULTS: ", result);
+      //console.log("RESULTS: ", result);
       return result.modifiedCount;
     } else {
       return null;
@@ -84,11 +90,13 @@ async function getUserById(id) {
   const db = getDBReference();
   const collection = db.collection('users');
   if (!ObjectId.isValid(id)) {
+    console.log("Invalid id");
     return null;
   } else {
     const results = await collection
       .find({ _id: new ObjectId(id) })
       .toArray();
+//    console.log('User: ', results[0]);
     return results[0];
   }
 }
@@ -112,3 +120,66 @@ exports.validateUser = async function (email, password) {
       return null
   }
 };
+
+exports.insertUserToCourse = async function(req){
+  const user = await exports.getUserDetailsbyID(req.params.id);
+//  console.log("Updating user courses: ", user);
+  if(!user){
+    console.log('Error fetching user');
+    return null;
+  }
+  if(!user.courses){
+//    console.log('Creating courses');
+    user.courses = req.body.add;
+  } else {
+//    console.log('Adding to courses');
+    req.body.add.forEach(function(item, index, array){
+      user.courses.push(item);
+    });    
+  }
+  console.log("Updating user courses: ", user);
+  return await updateUser(user, req.params.id);
+}
+
+exports.removeUserFromCourse = async function(req){
+  const user = await exports.getUserDetailsbyID(req.params.id);
+//  console.log("Updating user courses: ", user);
+  if(!user){
+    console.log('Error fetching user');
+    return null;
+  }
+  if(!user.courses){
+//    console.log('Creating courses');
+    return null;
+  } else {
+    const newArr = [];
+//    const removal = extractValidFields(req.body, courseInsertSchema);
+//    console.log('Adding to courses');
+    user.courses.forEach(function(item, index, array){
+      console.log("From Body: ", item);
+      if(!needsRemoval(item, req.body.remove)){
+        newArr.push(item);
+      }
+    });
+    user.courses = newArr;
+  }
+  console.log("Updating user courses: ", user);
+  return await updateUser(user, req.params.id);
+}
+
+function needsRemoval(course, removalList){
+  var test = false;
+  removalList.forEach(function(item, index, array){
+    console.log("Checking: ", course, "Against: ", item);
+    if(course === item){
+      console.log('returning true');
+      test = true;
+    }
+  });
+  console.log('test: ', test);
+  if(test){
+    return test;
+  } else {
+    return false;
+  }
+}
