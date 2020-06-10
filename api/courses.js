@@ -140,15 +140,30 @@ router.delete("/:courseId", requireAuthentication, async (req, res, next) => {
 });
 
 router.get("/:courseId/assignments", async (req, res, next) => {
-  try{
-    const assignments = await getAssignmentsByCourseId(req.params.courseId);
-    res.status(200).send({assignments: assignments});
+  try {
+    const course = await getCourseById(req.params.courseId);
+    if (course){
+      try{
+        const assignments = await getAssignmentsByCourseId(req.params.courseId);
+        res.status(200).send({assignments: assignments});
+      } catch (err) {
+        console.error(err);
+          res.status(500).send({
+            error: "An error occurred.  Try again later."
+          });
+      }
+    } else {
+      res.status(400).send({
+        err: "Can't find specified course"
+      })
+    }
   } catch (err) {
-    console.error(err);
-      res.status(500).send({
-        error: "An error occurred.  Try again later."
-      });
+    console.log(err);
+    res.status(500).send({
+      error: "Unable to get assignments. Please try again later."
+    });
   }
+
 });
 
 // gets the students in the courses by id
