@@ -3,6 +3,7 @@ const { ObjectId } = require('mongodb');
 const bcrypt = require('bcryptjs')
 const { getDBReference } = require('../lib/mongo');
 const { extractValidFields } = require('../lib/validation');
+const { getCourseById } = require('./courses');
 
 const userSchema = {
     name: { required: true },
@@ -133,8 +134,11 @@ exports.insertUserToCourse = async function(req){
     user.courses = req.body.add;
   } else {
 //    console.log('Adding to courses');
-    req.body.add.forEach(function(item, index, array){
-      user.courses.push(item);
+    req.body.add.forEach(async function(item, index, array){
+      var cond = await needsInsertion(item, user.courses);
+      if(cond){
+        user.courses.push(item);
+      }
     });    
   }
   console.log("Updating user courses: ", user);
@@ -182,4 +186,25 @@ function needsRemoval(course, removalList){
   } else {
     return false;
   }
+}
+
+async function needsInsertion(course, courseList){
+  var test = true;
+  var course = await getCourseById(course);
+  
+  if(!course){
+    console.log('course: ', course, ' is invalid ');
+    return false;
+  }
+  
+  courseList.forEach(function(item, index, array){
+    console.log("Checking: ", course, "Against: ", item);
+    if(course == item){
+      console.log('returning true');
+      test = false;
+    }
+  });
+  
+  console.log('test: ', test);
+  return test;
 }

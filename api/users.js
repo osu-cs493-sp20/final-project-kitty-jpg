@@ -65,50 +65,6 @@ router.get('/:id', requireAuthentication, async (req, res, next) => {
   }
 });
 
-//router.get('/:id/course', requireAuthentication, async (req, res, next) => {
-//  try {
-//    if(requireAuthorizationURL(req, res, next, 'id') == 1){
-//      const user = await getUserDetailsbyID(req.params.id);
-//      if (user) {
-//        res.status(200).send(user);
-//      } else {
-//        next();
-//      }
-//    } else {
-//      res.status(401).send({
-//        error: "User is not authorized to perform this action"
-//      });
-//    }
-//  } catch (err) {
-//    console.error(err);
-//    res.status(500).send({
-//      error: "Unable to fetch user.  Please try again later."
-//    });
-//  }
-//});
-
-router.put('/:id/course', requireAuthentication, async (req, res, next) => {
-  try {
-    if(requireAuthorizationURL(req, res, next, 'id') == 1){
-      const user = await getUserDetailsbyID(req.params.id);
-      if (user) {
-        res.status(200).send(user);
-      } else {
-        next();
-      }
-    } else {
-      res.status(401).send({
-        error: "User is not authorized to perform this action"
-      });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({
-      error: "Unable to fetch user.  Please try again later."
-    });
-  }
-});
-
 /*
  * Route for user to get JWT 
  */
@@ -214,7 +170,6 @@ router.put('/:id/course', requireAuthentication,async (req, res, next) => {
    try{
       if(requireAuthorizationURL(req, res, next, 'id') == 1){  
          if(validation.validateAgainstSchema(req.body, courseInsertSchema)){
-          //Insert into mongoDB
           const result = await insertUserToCourse(req);
           res.status(201).send({
               res: result,
