@@ -7,7 +7,8 @@ const courseSchema = {
   number: { required: true },
   title: { required: true },
   term: { required: true },
-  instructorId: { required: true }
+  instructorId: { required: true },
+  students: { required: false }
 };
 exports.courseSchema = courseSchema;
 
@@ -56,6 +57,19 @@ async function updateCourseById(id, updateObj) {
 
 exports.updateCourseById = updateCourseById;
 
+async function updateStudents(updateObj, id) {
+  update = extractValidFields(updateObj, courseSchema);
+  console.log("Updated Obj: " + update.students)
+
+  const db = getDBReference();
+  const collection = db.collection('courses');
+  console.log(id)
+  console.log(typeof(id))
+  const result = await collection.insertOne(update);
+  console.log("result: " + result)
+  return result.modifiedCount;
+}
+exports.updateStudents = updateStudents;
 async function getCoursesPage(page) {
   const db = getDBReference();
   const collection = db.collection('courses');
