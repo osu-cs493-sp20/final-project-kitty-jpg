@@ -50,6 +50,7 @@ async function applyRateLimit(req, res, next) {
     tokenBucket.tokens += newTokens;
     tokenBucket.tokens = Math.min(tokenBucket.tokens, rateLimitNumRequests);
     tokenBucket.last = timestamp;
+
     if (tokenBucket.tokens >= 1) {
       tokenBucket.tokens -= 1;
       await saveUserTokenBucket(req.ip, tokenBucket);
