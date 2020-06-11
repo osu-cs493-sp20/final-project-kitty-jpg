@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "c750900c-18de-4b93-97f9-002587453fb9",
+		"name": "FINAL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{baseUrl}}/courses/4ede7188df0d9f5831a0c051",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/courses/5edf74dce725990012313319",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						"5edf74dce725990012313319"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseUrl}}/courses/5edf53e29f39fd0012c46d10",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"subject\": \"Patched\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/courses/5edf74dce725990012313319",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						"5edf74dce725990012313319"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseUrl}}/courses/?page=2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/courses/?page=2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseUrl}}/courses/5edf53e29f39fd0012c46d10/assignments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/courses/5edf53e29f39fd0012c46d10/assignments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						"5edf53e29f39fd0012c46d10",
+						"assignments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseUrl}}/assignments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZWRlNzE4OGRmMGQ5ZjU4MzFhMGMwNTAiLCJyb2xlIjoiMCIsImlhdCI6MTU5MTY5MzE1MSwiZXhwIjoxNTkxNzc5NTUxfQ.0Wu8YXRzexYf_TPAhozrDwitywSjqZFmIy65yvH1CWw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"courseId\": \"5edf53e29f39fd0012c46d10\",\n  \"title\": \"Assignment 4\",\n  \"points\": 100,\n  \"due\": \"2019-06-14T17:00:00-07:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/assignments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"assignments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a new user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Jane Doe25\",\n\t\"email\": \"janedoe25@gmail.com\",\n\t\"password\": \"hunter2\",\n\t\"role\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login as admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"admin@it.hogwarts.edu\",\n\t\"password\": \"hunter2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/5ee1bc617b2f3b0013c420f2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"5ee1bc617b2f3b0013c420f2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
