@@ -1,3 +1,4 @@
+//Sean Spink
 const redis = require('redis');
 
 const redisHost = process.env.REDIS_HOST || 'localhost';

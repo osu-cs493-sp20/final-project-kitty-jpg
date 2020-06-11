@@ -1,5 +1,9 @@
 version: '3.7'
 services:
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4e06ed6a65b7ad4cbc646b979764a9e328c5ee08
   api:
     build: .
     image: tarpaulin-api
@@ -17,7 +21,11 @@ services:
       RABBIT_MQ_HOST: rabbitmq-server
     networks:
       - primary
+<<<<<<< HEAD
       - redis-net
+=======
+      - redis-net      
+>>>>>>> 4e06ed6a65b7ad4cbc646b979764a9e328c5ee08
 
   rabbitmq-server:
     image: rabbitmq:3-management
@@ -38,19 +46,36 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+<<<<<<< HEAD
       MONGO_INITDB_DATABASE: ${MONGO_ROOT_PASSWORD}
       MONGO_USER: ${MONGO_USER}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
 
+=======
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+    networks:
+      - primary      
+      
+>>>>>>> 4e06ed6a65b7ad4cbc646b979764a9e328c5ee08
   redis:
     image: redis:latest
     restart: always
     networks:
+<<<<<<< HEAD
       - redis-net
+=======
+      - redis-net      
+>>>>>>> 4e06ed6a65b7ad4cbc646b979764a9e328c5ee08
 
 volumes:
   mongo-data:
 
 networks:
   redis-net:
+<<<<<<< HEAD
   primary:
+=======
+  primary:
+>>>>>>> 4e06ed6a65b7ad4cbc646b979764a9e328c5ee08
