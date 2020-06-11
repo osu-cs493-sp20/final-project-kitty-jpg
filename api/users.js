@@ -50,7 +50,9 @@ router.get('/:id', requireAuthentication, async (req, res, next) => {
       if (user) {
         res.status(200).send(user);
       } else {
-        next();
+        res.status(401).send({
+        error: "User DNE"
+      });
       }
     } else {
       res.status(401).send({
