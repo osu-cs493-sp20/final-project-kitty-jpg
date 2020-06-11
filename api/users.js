@@ -1,7 +1,10 @@
 //Sean Spink
 const router = require('express').Router();
 const validation = require('../lib/validation');
-const { generateAuthToken } = require('../lib/auth')
+const { generateAuthToken,
+      requireAuthentication } = require('../lib/auth');
+
+
 const {
   getUserDetailsbyID,    
   insertNewUser,
