@@ -17,7 +17,7 @@ services:
       RABBIT_MQ_HOST: rabbitmq-server
     networks:
       - primary
-      - redis-net      
+      - redis-net
 
   rabbitmq-server:
     image: rabbitmq:3-management
@@ -40,9 +40,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
       MONGO_USER: ${MONGO_USER}
-      MONGO_PASSWORD: ${MONGO_PASSWORD}
-    networks:
-      - primary      
+      MONGO_PASSWORD: ${MONGO_PASSWORD}    
       
   redis:
     image: redis:latest
@@ -56,3 +54,4 @@ volumes:
 networks:
   redis-net:
   primary:
+
