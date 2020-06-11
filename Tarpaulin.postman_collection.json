@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "37d09a6e-b5a3-4b51-9f10-ac164d1e7de6",
+		"name": "Tarpaulin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Login a User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@it.hogwarts.edu\",\r\n    \"password\": \"hunter2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "Update Data for a Specific Course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZWRlNzE4OGRmMGQ5ZjU4MzFhMGMwNTAiLCJyb2xlIjoiMCIsImlhdCI6MTU5MTg0ODc1NiwiZXhwIjoxNTkxOTM1MTU2fQ.S8HBLzO8AHOQCzodh0W-VoebuLj-7QJdKBtFNnKAkhk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subject\": \"Literature\",\r\n    \"number\": \"231\",\r\n    \"title\": \"English 1\",\r\n    \"term\": \"Spring\",\r\n    \"instructorid\": \"3ede7188df0d9f5831a0c051\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5edecf8a4d87dd0012bfb129",
+									"type": "string"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch data for a specific course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/courses/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5edecf8a4d87dd0012bfb129"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a specific Course from the Database",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZWRlNzE4OGRmMGQ5ZjU4MzFhMGMwNTAiLCJyb2xlIjoiMCIsImlhdCI6MTU5MTg0ODc1NiwiZXhwIjoxNTkxOTM1MTU2fQ.S8HBLzO8AHOQCzodh0W-VoebuLj-7QJdKBtFNnKAkhk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/courses/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5edecf8a4d87dd0012bfb129"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch a list of the students enrolled in the Course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZWRlNzE4OGRmMGQ5ZjU4MzFhMGMwNTAiLCJyb2xlIjoiMCIsImlhdCI6MTU5MTg0ODc1NiwiZXhwIjoxNTkxOTM1MTU2fQ.S8HBLzO8AHOQCzodh0W-VoebuLj-7QJdKBtFNnKAkhk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/courses/:id/students",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								":id",
+								"students"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5edecf8a4d87dd0012bfb009"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update enrollment for a Course.",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZWRlNzE4OGRmMGQ5ZjU4MzFhMGMwNTAiLCJyb2xlIjoiMCIsImlhdCI6MTU5MTg0ODc1NiwiZXhwIjoxNTkxOTM1MTU2fQ.S8HBLzO8AHOQCzodh0W-VoebuLj-7QJdKBtFNnKAkhk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"add\": [\r\n    \"3ede7188df0d9f5831a0c052\",\r\n    \"456\"\r\n  ],\r\n  \"remove\": [\r\n    \"5edecf8a4d87dd0012bfb485\",\r\n    \"456\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses/:id/students",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								":id",
+								"students"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5edecf8a4d87dd0012bfb009"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch a CSV file containing list of the students enrolled in the Course.",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZWRlNzE4OGRmMGQ5ZjU4MzFhMGMwNTAiLCJyb2xlIjoiMCIsImlhdCI6MTU5MTg0ODc1NiwiZXhwIjoxNTkxOTM1MTU2fQ.S8HBLzO8AHOQCzodh0W-VoebuLj-7QJdKBtFNnKAkhk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/courses/:id/roster",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								":id",
+								"roster"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5edecf8a4d87dd0012bfb009"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f68c0c3f-00c3-4f29-86d8-c6393c5adbea",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "603c580b-ad60-4eb4-bbc0-13765c283e0a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
