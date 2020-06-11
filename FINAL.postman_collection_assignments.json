@@ -1,0 +1,532 @@
+{
+	"info": {
+		"_postman_id": "bf177a1b-24c3-4d3d-86c3-937f8cec11fb",
+		"name": "FINAL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "assignments",
+			"item": [
+				{
+					"name": "submissions",
+					"item": [
+						{
+							"name": "post submission",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "studentId",
+											"value": "3ede7188df0d9f5831a0c052",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/hal/cs493/final-project-kitty-jpg/diagram.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/assignments/5eded719727d8e1a449e06f8/submissions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"assignments",
+										"5eded719727d8e1a449e06f8",
+										"submissions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get singular submission",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/assignments/5eded719727d8e1a449e06f8/submissions/5ee2957bb1eda156ab167337",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"assignments",
+										"5eded719727d8e1a449e06f8",
+										"submissions",
+										"5ee2957bb1eda156ab167337"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all submissions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/assignments/5eded719727d8e1a449e06f8/submissions/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"assignments",
+										"5eded719727d8e1a449e06f8",
+										"submissions",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete singular submission",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/assignments/5eded719727d8e1a449e06f8/submissions/5ee2957bb1eda156ab167337",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"assignments",
+										"5eded719727d8e1a449e06f8",
+										"submissions",
+										"5ee2957bb1eda156ab167337"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a submission",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"studentId\": \"3ede7188df0d9f5831a0c043\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/assignments/5eded719727d8e1a449e06f8/submissions/5ee294deb1eda156ab167335",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"assignments",
+										"5eded719727d8e1a449e06f8",
+										"submissions",
+										"5ee294deb1eda156ab167335"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "make new assignment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"courseId\": \"4ede7188df0d9f5831a0c051\",\n  \"title\": \"Big Essay III\",\n  \"points\": \"100\",\n  \"due\": \"2020-06-12T03:56:04.822Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assignments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assignments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all assignments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "courseId",
+									"value": "4ede7188df0d9f5831a0c051",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Big Essay III",
+									"type": "text"
+								},
+								{
+									"key": "points",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "due",
+									"value": "2020-06-12T03:56:04.822Z",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assignments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assignments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete single assignment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "courseId",
+									"value": "4ede7188df0d9f5831a0c051",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Big Essay III",
+									"type": "text"
+								},
+								{
+									"key": "points",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "due",
+									"value": "2020-06-12T03:56:04.822Z",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assignments/5edeef934c971737da30c462",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assignments",
+								"5edeef934c971737da30c462"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update an assignment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"courseId\": \"4ede7188df0d9f5831a0c051\",\n  \"title\": \"Big Essay IV\",\n  \"points\": \"150\",\n  \"due\": \"2020-06-12T03:56:04.822Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assignments/5eded719727d8e1a449e06f8",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assignments",
+								"5eded719727d8e1a449e06f8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get single assignment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assignments/5eded719727d8e1a449e06f8",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assignments",
+								"5eded719727d8e1a449e06f8"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "{{baseUrl}}/courses/4ede7188df0d9f5831a0c051",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/courses/5edf74dce725990012313319",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						"5edf74dce725990012313319"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseUrl}}/courses/5edf53e29f39fd0012c46d10",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"subject\": \"Patched\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/courses/5edf74dce725990012313319",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						"5edf74dce725990012313319"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseUrl}}/courses/?page=2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/courses/?page=2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseUrl}}/courses/5edf53e29f39fd0012c46d10/assignments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/courses/5edf53e29f39fd0012c46d10/assignments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						"5edf53e29f39fd0012c46d10",
+						"assignments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseUrl}}/assignments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZWRlNzE4OGRmMGQ5ZjU4MzFhMGMwNTAiLCJyb2xlIjoiMCIsImlhdCI6MTU5MTY5MzE1MSwiZXhwIjoxNTkxNzc5NTUxfQ.0Wu8YXRzexYf_TPAhozrDwitywSjqZFmIy65yvH1CWw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"courseId\": \"5edf53e29f39fd0012c46d10\",\n  \"title\": \"Assignment 4\",\n  \"points\": 100,\n  \"due\": \"2019-06-14T17:00:00-07:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/assignments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"assignments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a new user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Jane Doe25\",\n\t\"email\": \"janedoe25@gmail.com\",\n\t\"password\": \"hunter2\",\n\t\"role\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login as admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"admin@it.hogwarts.edu\",\n\t\"password\": \"hunter2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/5ee1bc617b2f3b0013c420f2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"5ee1bc617b2f3b0013c420f2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWUxYTRhNzlkZTYwYzJlNWE3MDQzY2QiLCJyb2xlIjoiMCIsImlhdCI6MTU5MTkwNjk5NSwiZXhwIjoxNTkxOTkzMzk1fQ.vIBfIghpIQ644NYzSCdJi5Ct1ucIwYNRTjXrehWZ-rQ",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "76caefd3-aac9-45a9-be07-140d7bd01174",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "00c23773-71e2-4b68-bc6c-b55546b8cd3a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b7c41354-08a0-495b-8ba7-e123e8863362",
+			"key": "baseUrl",
+			"value": "localhost:8000",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
